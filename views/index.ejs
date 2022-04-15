@@ -3,17 +3,18 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>aih-tutorial</title>
+        <title>Patients Gender</title>
         <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.2/dist/echarts.min.js"></script>
     </head>
     <body>
         <div id="main" style="width: 600px; height: 400px"></div>
     </body>
+    <script>
+        const rawdata = '<%- data%>';
+        const data = JSON.parse(rawdata);
+        console.log(data);
 
-    <script type="text/javascript">
-        //let javascript to manipulate the dom object
         const main = document.getElementById("main");
-
         // on which dom object you want to render your chart
         var myChart = echarts.init(main);
 
@@ -21,20 +22,23 @@
         option = {
             xAxis: {
                 type: "category",
-                data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                data: [data[0].gender, data[1].gender],
             },
             yAxis: {
                 type: "value",
             },
             series: [
                 {
-                    data: [150, 230, 224, 218, 135, 147, 260],
-                    type: "line",
+                    data: [data[0].count, data[1].count],
+                    type: "bar",
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: "rgba(180, 180, 180, 0.2)",
+                    },
                 },
             ],
         };
 
         myChart.setOption(option);
     </script>
-
 </html>

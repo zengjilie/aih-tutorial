@@ -4,6 +4,11 @@ const app = express();
 // import the postgres library
 const Pool = require("pg").Pool;
 
+// const { resolveInclude } = require("ejs");
+
+//set the view engine as ejs
+app.set("view engine","ejs");
+
 const pool = new Pool({
     host: "localhost",
     user: "postgres",
@@ -17,8 +22,17 @@ const pool = new Pool({
 //routing point
 app.get("/", async (req, res) => {
     try {
-        const admissionsData = await pool.query("SELECT * FROM admissions");
-        res.send(admissionsData);
+        const admissionsData = await pool.query(
+            "select count(gender), gender from patient group by gender"
+        );
+
+        const data = admissionsData.rows;
+        // res.send(data);
+
+        //absolute path
+        // res.sendFile(__dirname + "/index.html");
+        
+        res.render("index",{data:JSON.stringify(data)});
     } catch (err) {
         console.log(err);
     }
